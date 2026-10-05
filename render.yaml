@@ -1,0 +1,25 @@
+# Render.com Deployment Blueprint
+# Deploy this full-stack app (React + API + Chromium) on Render's free tier
+# Free tier: 512MB RAM, 750 hours/month
+
+services:
+  - type: web
+    name: url-resolver
+    runtime: docker
+    plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile
+    
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_ID
+        value: url-resolver
+      - key: APP_SECRET
+        generateValue: true  # Render auto-generates a secure secret
+      - key: URL_UNWRAPPER_CHROMIUM_PATH
+        value: /usr/bin/chromium
+      - key: MAX_CONCURRENT_JOBS
+        value: 1
+    
+    healthCheckPath: /
